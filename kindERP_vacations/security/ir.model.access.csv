@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_holidays_configuration,hr.holidays.configuration,model_hr_holidays_configuration,,1,1,1,1
+access_holiday_history,holiday.history,model_holiday_history,,1,1,1,1
+access_bytebrand_project,bytebrand.project,model_bytebrand_project,,1,1,1,1

@@ -1,0 +1,8 @@
+body {
+    background-color: white !important;
+}
+
+.table-condensed .invoice_tbody tr:nth-child(even) {
+    background-color: #F1F1F1;
+    color:#434343
+}

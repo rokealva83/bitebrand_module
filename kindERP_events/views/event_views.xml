@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_event_form">
+            <field name="name">event.event.form</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="replace">
+                    <form string="Events">
+                        <header>
+                            <button string="Confirm Event" name="button_confirm"
+                                    states="draft" type="object"
+                                    class="oe_highlight"
+                                    groups="event.group_event_manager"/>
+                            <button string="Finish Event" name="button_done"
+                                    states="confirm" type="object"
+                                    class="oe_highlight"
+                                    groups="event.group_event_manager"/>
+                            <button string="Set To Draft" name="button_draft"
+                                    states="cancel,done" type="object"
+                                    groups="event.group_event_manager"/>
+                            <button string="Cancel Event" name="button_cancel"
+                                    states="draft,confirm" type="object"
+                                    groups="event.group_event_manager"/>
+                            <button string="Send Invite" name="send_invite"
+                                    states="confirm" type="object"
+                                    groups="event.group_event_manager"/>
+                            <field name="state" widget="statusbar"
+                                   statusbar_visible="draft,confirm,done"/>
+                        </header>
+                        <sheet>
+                            <div class="oe_button_box" name="button_box"
+                                 groups="base.group_user">
+                                <button name="toggle_active" type="object"
+                                        class="oe_stat_button" icon="fa-archive"
+                                        groups="event.group_event_manager">
+                                    <field name="active" widget="boolean_button"
+                                           options='{"terminology": "archive"}'/>
+                                </button>
+                                <button name="%(event.act_event_registration_from_event)d"
+                                        type="action"
+                                        class="oe_stat_button oe_event_attendee_button"
+                                        icon="fa-users"
+                                        help="Register with this event"
+                                        groups="event.group_event_manager">
+                                    <field name="seats_expected"
+                                           widget="statinfo"
+                                           string="Attendees"/>
+                                </button>
+                                <field name="user_registered" invisible="1"/>
+                                <button name="registration_from_event"
+                                        type="object"
+                                        class="oe_stat_button oe_event_attendee_button"
+                                        icon="fa-registered"
+                                        help="Register with this event"
+                                        string="UnRegistration"
+                                        attrs="{'invisible': ['|', ('state', 'in', ['draft', 'done', 'cancel']), ('user_registered', '!=', True)]}"/>
+
+                                <button name="registration_from_event"
+                                        type="object"
+                                        class="oe_stat_button oe_event_attendee_button"
+                                        icon="fa-registered"
+                                        help="Register with this event"
+                                        string="Registration"
+                                        attrs="{'invisible': ['|', ('state', 'in', ['draft', 'done', 'cancel']), ('user_registered', '=', True)]}"/>
+                            </div>
+                            <div class="oe_title">
+                                <label for="name" class="oe_edit_only"/>
+                                <h1>
+                                    <field name="name"
+                                           placeholder="Event Name"/>
+                                </h1>
+                            </div>
+                            <group name="main_field_group">
+                                <group>
+                                    <field name="date_begin"/>
+                                </group>
+                                <group>
+                                    <field name="date_end"/>
+                                </group>
+                            </group>
+
+                            <notebook>
+                                <page name="registrations"
+                                      string="Event Description">
+                                    <field name="description"
+                                           attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}"/>
+                                </page>
+                                <page name="registered_user"
+                                      string="Registered Users">
+                                    <field name="registration_ids" readonly="1">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="phone"/>
+                                            <field name="email"/>
+                                            <field name="state"/>
+                                        </tree>
+                                    </field>
+                                </page>
+                                <page name="settings"
+                                      string="Settings"
+                                      groups="event.group_event_manager">
+                                    <group name="main_field_group">
+                                        <group>
+                                            <field name="address_id"
+                                                   context="{'show_address': 1}"
+                                                   options='{"always_reload": True}'/>
+                                            <field name="organizer_id"
+                                                   attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}"/>
+                                            <field name="company_id"
+                                                   groups="base.group_multi_company"/>
+                                        </group>
+                                        <group>
+                                            <field name="user_id"/>
+                                            <field name="event_type_id"/>
+                                            <field name="date_tz"
+                                                   attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group>
+                                            <field name="seats_min"
+                                                   attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}"/>
+                                            <label for="seats_availability"/>
+                                            <div>
+                                                <field name="seats_availability"
+                                                       widget='radio'
+                                                       attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}"/>
+                                                <span attrs="{'invisible': [('seats_availability', '=', 'unlimited')]}"
+                                                      class="oe_read_only">
+                                                    to
+                                                </span>
+                                                <field name="seats_max"
+                                                       attrs="{'invisible': [('seats_availability', '=', 'unlimited')],
+                                                                'required': [('seats_availability', '=', 'limited')],
+                                                                'readonly': [('state', 'in', ['done', 'cancel'])]}"/>
+                                            </div>
+                                        </group>
+                                        <group>
+                                            <field name="auto_confirm"
+                                                   groups="base.group_no_one"/>
+                                            <field name="only_bb"/>
+                                        </group>
+                                    </group>
+                                </page>
+                                <page string="Email Schedule"
+                                      groups="base.group_hr_user">
+                                    <group>
+                                        <field name="reply_to"/>
+                                    </group>
+                                    <field name="event_mail_ids">
+                                        <tree string="Email Schedule"
+                                              editable="bottom">
+                                            <field name="sequence"
+                                                   widget="handle"/>
+                                            <field name="template_id"/>
+                                            <field name="interval_nbr"
+                                                   attrs="{'readonly':[('interval_unit','=','now')]}"/>
+                                            <field name="interval_unit"/>
+                                            <field name="interval_type"/>
+                                            <field name="done"/>
+                                        </tree>
+                                    </field>
+                                </page>
+                            </notebook>
+                        </sheet>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"
+                                   widget="mail_followers"
+                                   groups="base.group_user"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </form>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_event_kanban">
+            <field name="name">event.event.kanban</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="before">
+                    <fields name="check_user"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <fields name="check_user"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="event.action_event_view">
+           <field name="name">Events</field>
+           <field name="type">ir.actions.act_window</field>
+           <field name="res_model">event.event</field>
+           <field name="view_type">form</field>
+           <field name="view_mode">kanban,tree,calendar,form</field>
+           <field name="context">{"search_default_upcoming":1}</field>
+            <field name="domain">[('check_user', '=', True)]</field>
+           <field name="search_view_id" ref="event.view_event_search"/>
+           <field name="help" type="html"><p class="oe_view_nocontent_create">
+    Click to add a new event.
+</p><p>
+    Odoo helps you schedule and efficiently organize your events:
+    track subscriptions and participations, automate the confirmation emails,
+    sell tickets, etc.
+</p></field>
+        </record>
+
+    </data>
+</openerp>

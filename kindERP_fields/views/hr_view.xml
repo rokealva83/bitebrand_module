@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_employee_form_inherit" model="ir.ui.view">
+            <field name="name">view.employee.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//page[3]" position="inside">
+                    <button name="some_func" type="object"
+                            string="Function (Don`t touch)" groups="base.group_system"/>
+                </xpath>
+
+
+                <xpath expr="//field[@name='image']" position="after">
+                    <field name="check_owner_user" invisible="1"/>
+                    <field name="check_group_user" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='category_ids']" position="replace">
+                    <field name="category_ids" widget="many2many_tags" placeholder="e.g. Part Time" groups="base.group_user" attrs="{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='mobile_phone']" position="after">
+                    <field name="secondary_phone"/>
+                </xpath>
+
+                <xpath expr="//field[@name='address_home_id']" position="after">
+                    <field name="personal_email" required="1" widget="email" attrs="{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}"/>
+                    <field name="skype" required="1" attrs="{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}"/>
+                    <field name="jira" attrs="{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}"/>
+                    <field name="bitbucket" attrs="{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}"/>
+                    <field name="github" attrs="{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}"/>
+                    <field name="gitlab" attrs="{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}"/>
+                    <field name="user_id" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//page[2]" position="attributes">
+                    <attribute name="groups">base.group_user</attribute>
+                </xpath>
+
+
+                <xpath expr="//page[2]//group//group[1]" position="before">
+                    <group string="Contact Information (UKR)">
+                        <field name="last_name_ua" required="1" attrs="{'readonly': [('check_group_user', '!=', True) ]}"/>
+                        <field name="first_name_ua" required="1" attrs="{'readonly': [('check_group_user', '!=', True) ]}"/>
+                        <field name="second_name_ua" required="1" attrs="{'readonly': [('check_group_user', '!=', True) ]}"/>
+                    </group>
+                </xpath>
+
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='image']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='address_id']" position="attributes">
+                    <attribute name='required'>1</attribute>
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='department_id']" position="attributes">
+                    <attribute name='required'>1</attribute>
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='job_id']" position="attributes">
+                    <attribute name='required'>1</attribute>
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='parent_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='coach_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='manager']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='mobile_phone']" position="attributes">
+                    <attribute name='required'>1</attribute>
+                    <attribute name="attrs">{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='secondary_phone']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='work_location']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='work_phone']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='address_home_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='work_email']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='gender']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='marital']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='children']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_owner_user', '!=', True), '|', ('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='birthday']" position="attributes">
+                   <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='place_of_birth']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('check_group_user', '!=', True) ]}</attribute>
+                </xpath>
+
+                <xpath expr="//page[2]//group" position="after">
+                    <group string="Attachments" col="4">
+                        <newline/>
+                        <field name="attachment_ids" nolabel="1" colspan="4" attrs="{'readonly': [('check_group_user', '!=', True) ]}">
+                            <tree string="Attachment Files" colors="blue:type in ('url',)" >
+                                <field name="name"/>
+                                <field name="datas_fname"/>
+                                <field name="write_date"/>
+                            </tree>
+                        </field>
+                    </group>
+                </xpath>
+
+                <xpath expr="//field[@name='work_email']" position="attributes">
+                    <attribute name='required'>1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='gender']" position="attributes">
+                    <attribute name='required'>1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='birthday']" position="attributes">
+                    <attribute name='required'>1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='passport_id']" position="replace"/>
+                <xpath expr="//field[@name='bank_account_id']" position="replace">
+                    <field name="contract_number" attrs="{'readonly': [('check_group_user', '!=', True) ]}"/>
+                    <field name="key_card_number" attrs="{'readonly': [('check_group_user', '!=', True) ]}"/>
+                </xpath>
+
+            </field>
+        </record>
+        <record id="hr_hr_employee_view_form3" model="ir.ui.view">
+            <field name="name">hr.hr.employee.view.form3</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='medic_exam']" position="replace"/>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

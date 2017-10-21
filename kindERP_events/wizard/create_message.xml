@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="create_external_mail_view" model="ir.ui.view">
+            <field name="name">create.message.wizard.form</field>
+            <field name="model">create.message.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group colspan="4">
+                            <field name="mail_to" required="1"/>
+                            <field name="mail_from" required="1"
+                                   domain="[('user_id', 'in', [u_id, ''])]"/>
+                            <field name="mail_reply_to"/>
+                            <field name="subject" required="1"/>
+                            <field name="body"/>
+                        </group>
+                        <group colspan="4">
+                            <button string="Send Message"
+                                    class="ooe_button oe_list_add oe_highlight"
+                                    name="send_message" type="object"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>
+
+        <!--Done BY Addition IT Solutions: END -->

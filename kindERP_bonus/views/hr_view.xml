@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="hr.open_view_employee_list_my" model="ir.actions.act_window">
+            <field name="name">Employees</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="hr.view_employee_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a new employee.
+              </p><p>
+                With just a quick glance on the Odoo employee screen, you
+                can easily find all the information you need for each person;
+                contact data, job position, availability, etc.
+              </p>
+            </field>
+        </record>
+
+        <record id="action_bonus" model="ir.actions.act_url">
+            <field name="name">Bonus</field>
+            <field name="url">/employee_bonus</field>
+            <field name="target">self</field>
+        </record>
+
+        <record id="view_employee_form_inherit" model="ir.ui.view">
+            <field name="name">view.employee.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//div[@class='oe_button_box']" position="after">
+                     <div class="oe_button_box" name="button_box" attrs="{'invisible': [('check_owner_user', '!=', True)]}">
+                    <button name="%(action_bonus)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-money"
+                            string="Bonus"
+                            attrs="{'invisible': [('total_bonus', '=', 0.00)]}"/>
+                    </div>
+                </xpath>
+
+                <xpath expr="//page[3]" position="inside">
+                    <group>
+                        <field name="tax_free" groups="base.group_hr_manager"/>
+                    </group>
+                    <group string="Bonus"
+                           attrs="{'invisible': [('total_bonus', '=', 0.00)]}">
+                        <group colspan="4" invisible="1">
+                            <label for="employee_bonus"/>
+                            <div>
+                                <field name="total_bonus"
+                                       readonly="1"/>
+                            </div>
+                        </group>
+                        <group colspan="4">
+                            <field name="employee_bonus_ids" nolable="1">
+                                <tree editable="top">
+                                    <field name="bonus"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="employee_bonus_tree" model="ir.ui.view">
+            <field name="name">Employee Bonus</field>
+            <field name="model">hr.employee</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="shared_profit"/>
+                    <field name="fixed_bonus"/>
+                    <field name="final_fixed_bonus"/>
+                    <field name="calculate_bonus"/>
+                    <field name="final_calculate_bonus"/>
+                    <field name="other_bonus"/>
+                    <field name="total_bonus"/>
+                    <field name="all_wage"/>
+                    <field name="user_wage"/>
+                    <field name="all_work_days"/>
+                    <field name="work_days"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_employee_bonus" model="ir.actions.act_window">
+            <field name="name">Employee Bonus</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('shared_profit', '!=', 0)]</field>
+            <field name="view_id" ref="employee_bonus_tree"/>
+        </record>
+
+        <menuitem parent="menu_bonus_system_root"
+                  action="action_employee_bonus"
+                  sequence="100" id="menu_employee_bonus"/>
+
+
+    </data>
+</openerp>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <report id="preview_rml_report" model="res.company" name="preview.report" menu="False"
+                rml="base/report/preview_report.rml" string="Preview RML Report"/>
+
+        <record id="view_company_form_inherit" model="ir.ui.view">
+            <field name="name">res.company.form.inherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="owner"/>
+                </xpath>
+                <xpath expr="//page[1]" position="after">
+                    <page string="Bank">
+                        <group>
+                            <field name="b_mwst"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

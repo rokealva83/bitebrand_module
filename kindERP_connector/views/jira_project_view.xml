@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_jira_project_form" model="ir.ui.view">
+            <field name="name">Jira Project</field>
+            <field name="model">jira.project</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group colspan="4">
+                            <field name="name" colspan="4"/>
+                            <field name="key" colspan="4"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_jira_project_tree" model="ir.ui.view">
+            <field name="name">Jira Project</field>
+            <field name="model">jira.project</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="key"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_jira_project_search" model="ir.ui.view">
+            <field name="name">Jira Project</field>
+            <field name="model">jira.project</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="key"/>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_jira_project" model="ir.actions.act_window">
+            <field name="name">Jira Project</field>
+            <field name="res_model">jira.project</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_jira_project_tree"/>
+            <field name="search_view_id" ref="view_jira_project_search"/>
+            <field name="context">{}</field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_jira_project_form">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_jira_project_form"/>
+            <field name="act_window_id" ref="action_jira_project"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_jira_project_tree">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_jira_project_tree"/>
+            <field name="act_window_id" ref="action_jira_project"/>
+        </record>
+
+        <menuitem action="action_jira_project" id="menu_jira_project" name="Jira Project"
+                  parent="account.menu_finance_configuration" sequence="100"/>
+
+
+
+        <record id="view_jira_project_conf_form" model="ir.ui.view">
+            <field name="name">Jira Project Conf</field>
+            <field name="model">jira.project.conf</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group colspan="4">
+                            <field name="user_id" required="1"/>
+                            <field name="name" required="1"/>
+                            <field name="password" groups="base.group_system" required="1"/>
+                            <field name="product_id" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_jira_project_conf_tree" model="ir.ui.view">
+            <field name="name">Jira Project Conf</field>
+            <field name="model">jira.project.conf</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="user_id"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_jira_project_conf" model="ir.actions.act_window">
+            <field name="name">Jira Project Conf</field>
+            <field name="res_model">jira.project.conf</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_jira_project_conf_tree"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_jira_project_conf_form">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_jira_project_conf_form"/>
+            <field name="act_window_id" ref="action_jira_project_conf"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_jira_project_conf_tree">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_jira_project_conf_tree"/>
+            <field name="act_window_id" ref="action_jira_project_conf"/>
+        </record>
+
+        <menuitem action="action_jira_project_conf" id="menu_jira_project_conf" name="Jira Project Conf"
+                  parent="account.menu_finance_configuration" sequence="150"/>
+    </data>
+</openerp>

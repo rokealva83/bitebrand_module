@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_jira_project_connector_form" model="ir.ui.view">
+            <field name="name">Jira Project Connector</field>
+            <field name="model">jira.project.connector</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group colspan="4">
+                            <group colspan="4">
+                                <field name="jira_project_ids" nolabel="1"/>
+                            </group>
+                            <group colspan="4">
+                                <field name="jira_user_id"/>
+                            </group>
+                            <group colspan="4">
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                            </group>
+                            <group colspan="4">
+                                <field name="status" readonly="1"/>
+                                <field name="invoice_id" readonly="1"/>
+                            </group>
+                            <newline/>
+                            <group colspan="4">
+                                <field name="worklog_ids" nolabel="1" readonly="1">
+                                    <tree>
+                                        <field name="project"/>
+                                        <field name="author"/>
+                                        <field name="email"/>
+                                        <field name="time"/>
+                                        <field name="task_key"/>
+                                        <field name="time_log"/>
+
+                                    </tree>
+                                </field>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_jira_project_connector_tree" model="ir.ui.view">
+            <field name="name">Jira Project Connector</field>
+            <field name="model">jira.project.connector</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree colors="red:status=='error';green:status=='success'">
+                    <field name="jira_project_ids"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_jira_project_connector_search" model="ir.ui.view">
+            <field name="name">Jira Project Connector</field>
+            <field name="model">jira.project.connector</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="jira_project_ids"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="status"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_jira_project_connector" model="ir.actions.act_window">
+            <field name="name">Jira Project Connector</field>
+            <field name="res_model">jira.project.connector</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_jira_project_connector_tree"/>
+            <field name="search_view_id" ref="view_jira_project_connector_search"/>
+            <field name="context">{}</field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_jira_project_connector_form">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_jira_project_connector_form"/>
+            <field name="act_window_id" ref="action_jira_project_connector"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_jira_project_connector_tree">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_jira_project_connector_tree"/>
+            <field name="act_window_id" ref="action_jira_project_connector"/>
+        </record>
+
+        <menuitem action="action_jira_project_connector" id="menu_jira_project_connector" name="Jira Project Connector"
+                  parent="account.menu_finance_configuration" sequence="300"/>
+    </data>
+</openerp>

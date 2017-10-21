@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="added_attachment_view">
+            <field name="name">Add Attachment</field>
+            <field name="model">hr.applicant.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="attachment_id"
+                               domain="[('res_model','=','hr.applicant')]"
+                               context="{'active_model':res_model, 'active_id':res_id}"/>
+                        <field name="res_model"/>
+                        <field name="res_id"/>
+                    </group>
+
+                    <footer>
+                        <button string='Add'
+                                name="add_attachment"
+                                type="object"
+                                class="oe_highlight"/>
+                        or
+                        <button string="Cancel"
+                                class="oe_link"
+                                special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_added_new_document"
+                model="ir.actions.act_window">
+            <field name="name">Add Document</field>
+            <field name="res_model">hr.applicant.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="added_attachment_view"/>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_case_form_view_job">
+            <field name="name">Jobs - Recruitment Form</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id"
+                   ref="hr_recruitment.crm_case_form_view_job"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_get_attachment_tree_view']"
+                       position="after">
+                    <button name="%(action_added_new_document)d"
+                            class="oe_stat_button"
+                            string="Add Document"
+                            icon="fa-book"
+                            type="action">
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

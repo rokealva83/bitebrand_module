@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_jira_project_manager,jira_project_manager,model_jira_project,,1,1,1,1
+access_jira_project_connector_manager,jira_project_connector_manager,model_jira_project_connector,,1,1,1,1
+access_jira_worklog_manager,jira_worklog_manager,model_jira_worklog,,1,1,1,1
+access_jira_project_conf_manager,jira_project_conf_manager,model_jira_project_conf,,1,1,1,1

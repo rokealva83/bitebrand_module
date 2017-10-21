@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_slack_bot,slack.bot,model_slack_bot,event.group_event_user,1,1,1,1
+access_slack_channel,slack.channel,model_slack_channel,event.group_event_user,1,1,1,1
+access_slack_bot_message,slack.bot.message,model_slack_bot_message,event.group_event_user,1,1,1,1

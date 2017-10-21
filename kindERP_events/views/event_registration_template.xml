@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="event_registration_mail_template"
+                model="mail.template">
+            <field name="name">Event Registration</field>
+            <field name="model_id" ref="event.model_event_registration"/>
+            <field name="email_from">
+                ${(object.event_id.organizer_id.email or object.event_id.user_id.email or '')|safe}
+            </field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="subject">Your registration in ${object.event_id.name}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html">
+
+                <![CDATA[
+
+                <div style="background:#f6f6f6;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;margin:0;padding:0">
+                    <style>
+                        .massage_body td, .massage_body th {
+                        padding: 15px!important;
+                        }
+                    </style>
+                    <div style="background:#f6f6f6;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;margin:0;padding:0">
+                        <table cellspacing="0" cellpadding="0" border="0"
+                               height="100%"
+                               width="100%">
+                            <tbody class='massage_body'>
+                                <tr>
+                                    <td align="center" valign="top"
+                                        style="padding:20px 0 20px 0">
+                                        <table bgcolor="#FFFFFF" cellspacing="0"
+                                               cellpadding="10" border="0"
+                                               width="650">
+                                            <tbody>
+                                                <tr>
+                                                    <td valign="top">
+                                                        <a href="http://erp.kindgeek.com">
+                                                            <img src="/kindERP_fields/static/bytebrand.png"
+                                                                 alt="Logo of KindGeek"
+                                                                 title="KindGeek"
+                                                                 style="height:50px"/>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Hello <b>${object.name}</b>,
+                                                        <br>
+                                                        We would like to thank you for your presence at our event ${object.event_id.name}.
+                                                        <br>
+                                                        <b>Start: </b>${object.event_begin_date}
+                                                        <br>
+                                                        <b>Finish: </b>${object.event_end_date}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                ]]>
+            </field>
+        </record>
+    </data>
+</openerp>

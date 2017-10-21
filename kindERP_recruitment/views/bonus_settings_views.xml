@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_bonus_system_settings_form">
+            <field name="name">bonus.system.settings.form</field>
+            <field name="model">bonus.system.settings</field>
+            <field name="arch" type="xml">
+                <form string="Bonus System Settings">
+                    <sheet>
+                        <group colspan="4">
+                            <group>
+                                <field name="check_system"/>
+                            </group>
+                            <group colspan="4">
+                                <field name="company_id"
+                                       attrs="{'required': [('check_system', '=', True)],
+                                       'invisible': [('check_system', '!=', True)],}"/>
+                                <field name="profit"/>
+                            </group>
+
+                            <group>
+                                <field name="use_account_balance"/>
+                            </group>
+                            <group>
+                                <field name="account_journal_name"
+                                       attrs="{'required': [('use_account_balance', '=', True)],
+                                       'invisible': [('use_account_balance', '!=', True)],}"/>
+                            </group>
+
+                            <group>
+                                <field name="fix_bonus"/>
+                            </group>
+                            <group>
+                                <field name="calculate_bonus"/>
+                            </group>
+
+                            <group>
+                                <field name="year"/>
+                            </group>
+                            <group>
+                                <field name="minimum_period"/>
+                            </group>
+                            <group colspan="4">
+                                <field name="category_ids"
+                                       widget="many2many_tags"
+                                       attrs="{'required': [('check_system', '=', False)],
+                                       'invisible': [('check_system', '!=', False)],}"/>
+                            </group>
+                            <separator string="Result" colspan="4"/>
+                            <field name="archive"/>
+                            <group colspan="4">
+                                   <!--attrs="{'invisible': [('archive', '!=', True)],}">-->
+                                <field name="employee_bonus_result_ids"
+                                       nolabel="1">
+                                    <tree>
+                                        <field name="employee_id"/>
+                                        <field name="shared_profit"/>
+                                        <field name="fixed_bonus"/>
+                                        <field name="final_fixed_bonus"/>
+                                        <field name="calculate_bonus"/>
+                                        <field name="final_calculate_bonus"/>
+                                        <field name="other_bonus"/>
+                                        <field name="total_bonus"/>
+                                        <field name="all_wage"/>
+                                        <field name="user_wage"/>
+                                        <field name="all_work_days"/>
+                                        <field name="work_days"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="bonus_system_settings_tree" model="ir.ui.view">
+            <field name="name">bonus.system.settings.tree</field>
+            <field name="model">bonus.system.settings</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="year"/>
+                    <field name="company_id"/>
+                    <field name="percentage"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_bonus_system_settings" model="ir.actions.act_window">
+            <field name="name">Bonus System Settings</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bonus.system.settings</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bonus_system_settings_tree"/>
+        </record>
+
+        <menuitem parent="hr.menu_hr_root" name="Bonus System" sequence="120"
+                  id="menu_bonus_system_root" groups="base.group_system"/>
+        <menuitem parent="menu_bonus_system_root"
+                  action="action_bonus_system_settings"
+                  sequence="100" id="menu_bonus_system_settings"/>
+
+    </data>
+</openerp>

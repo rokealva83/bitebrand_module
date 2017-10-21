@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_salary_system_form">
+            <field name="name">salary.system.form</field>
+            <field name="model">employee.salary.system</field>
+            <field name="arch" type="xml">
+                <form string="Salary">
+                    <header>
+                        <button name="action_confirm" states="draft"
+                                type="object" string="Confirm"
+                                class="btn-primary"/>
+                        <button name="action_draft" states="confirm"
+                                type="object" string="Set to Draft"/>
+                        <button name="create_vendor_bills" states="confirm"
+                                type="object" string="Create Vendor Bills"
+                                class="btn-primary"/>
+                        <button name="action_done" states="bills"
+                                type="object" string="Set to Done"
+                                class="btn-primary"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,confirm,bills,paid"/>
+                    </header>
+
+                    <group colspan="4">
+                        <group colspan="4">
+                            <field name="period" required="1"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="work_day_in_month" required="1"/>
+                        </group>
+                        <group>
+                            <field name="exchange_rate" required="1"/>
+                            <field name="fixed_monthly_tax"/>
+                        </group>
+                        <group>
+                            <field name="account_service"/>
+                            <field name="bank_commission"/>
+                        </group>
+                        <group colspan="4">
+                            <button name="recalculate"
+                                    type="object"
+                                    string="Re-Calculate"
+                                    class="btn-primary"/>
+                            <field name="employee_salary_ids" nolabel="1"
+                                   colspan="4">
+                                <tree editable="bottom">
+                                    <field name="employee_id" required="1"/>
+                                    <field name="salary" required="1"/>
+                                    <field name="contract_id"/>
+                                    <field name="day_off"/>
+                                    <field name="effective_hours"/>
+                                    <field name="bonus"/>
+                                    <field name="total_salary"/>
+
+                                    <field name="other_expenses"/>
+                                    <field name="account_software_keys"/>
+                                    <field name="account_service"/>
+                                    <field name="fixed_monthly_tax"/>
+                                    <field name="bank_commission"/>
+                                    <field name="total_expenses" readonly="1"/>
+
+                                    <field name="exchange_rate" required="1"/>
+                                    <field name="total_expenses_currency"
+                                           readonly="1"/>
+
+                                    <field name="salary_and_expenses_currency"
+                                           readonly="1"/>
+                                    <field name="salary_and_expenses"
+                                           readonly="1"/>
+                                    <field name="total_tax" readonly="1"/>
+                                    <field name="total" readonly="1"/>
+                                    <field name="total_currency"
+                                           readonly="1"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="salary_system_tree" model="ir.ui.view">
+            <field name="name">salary.system.tree</field>
+            <field name="model">employee.salary.system</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="period"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_salary_system" model="ir.actions.act_window">
+            <field name="name">Salary System</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">employee.salary.system</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="salary_system_tree"/>
+        </record>
+
+        <menuitem parent="hr.menu_hr_root" name="Salary System" sequence="130"
+                  id="menu_salary_system_root" groups="base.group_system"/>
+
+        <menuitem parent="menu_salary_system_root"
+                  action="action_salary_system"
+                  sequence="100" id="menu_salary_system"/>
+
+    </data>
+</openerp>

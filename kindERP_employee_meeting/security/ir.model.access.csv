@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_question,hr_question,model_hr_question,hr.group_hr_user,1,1,1,1
+access_hr_employee_answer,hr_employee_answer,model_hr_employee_answer,hr.group_hr_user,1,1,1,1
+access_hr_employee_meeting,hr_employee_meeting,model_hr_employee_meeting,hr.group_hr_user,1,1,1,1

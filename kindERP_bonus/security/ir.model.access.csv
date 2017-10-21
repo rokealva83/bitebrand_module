@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bonus_system_settings,bonus.system.settings,model_bonus_system_settings,,1,1,1,1
+access_employee_bonus,employee.bonus,model_employee_bonus,,1,1,1,1
+access_hr_contract_user,hr.contract.user,hr_contract.model_hr_contract,,1,0,0,0
+access_employee_bonus_result,employee.bonus.result,model_employee_bonus_result,base.group_system,1,1,1,1
+access_employee_salary_system,employee_salary_system,model_employee_salary_system,base.group_system,1,1,1,1
+access_employee_salary,employee_salary,model_employee_salary,base.group_system,1,1,1,1

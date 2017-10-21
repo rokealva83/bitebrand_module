@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data >
+
+        <record id="event_email_template" model="mail.template">
+            <field name="name">Event Invite</field>
+            <field name="email_from">${(object.mail_from.email or '')|safe}</field>
+            <field name="email_to">${(object.mail_to or '')|safe}</field>
+            <field name="subject">${object.subject or 'n/a' })</field>
+            <field name="model_id" ref="model_create_message_wizard"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html"><![CDATA[
+                ${object.body|safe}
+            ]]></field>
+        </record>
+
+    </data>
+</openerp>

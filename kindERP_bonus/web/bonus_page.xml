@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <record id="bonus_page" model="website.menu">
+            <field name="name">Bonus Page</field>
+            <field name="url">/employee_bonus</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">34</field>
+        </record>
+
+        <template name="Bonus Page" id="website.bonus_page" page="True">
+            <!--<t t-call="website.layout">-->
+            <header>
+                <title>Bytebrand early bonus</title>
+                <link rel="stylesheet"
+                      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+            </header>
+            <div id="page">
+                <div class="container" id="content">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <h1 style="color: #99cc00;">
+                                <strong>Bytebrand early bonus.</strong>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h2>How it works.</h2>
+                            <p>Every Bytebrand employee has his/her own bonus
+                                from the company profit.
+                            </p>
+                            <p>All you need is to work hard until the end of the
+                                year.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row  text-center">
+                        <div class="col-xs-12">
+                            <h2>
+                                Employee shared profit:
+                                <span style="color: #99cc00;"><t t-esc="'%.2f'%(shared_profit)"  />$</span>
+                            </h2>
+                        </div>
+                        <div class="col-xs-12">
+                            <h2>
+                                Base Bonus:
+                                <span style="color: #99cc00;"><t t-esc="'%.2f'%(final_fixed_bonus)"/>$</span>
+                            </h2>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <h2>
+                                Salary Bonus:
+                                <span style="color: #99cc00;"><t  t-esc="'%.2f'%(final_calculate_bonus)"/>$</span>
+                            </h2>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <h2>
+                                Customer Bonus:
+                                <span style="color: #99cc00;"><t  t-esc="'%.2f'%(employee_bonus)"/>$</span>
+                            </h2>
+                        </div>
+                        <div class="col-xs-12">
+                            <h2>
+                                Your Bonus:
+                                <span style="color: #99cc00;"><t t-esc="'%.2f'%(total_bonus)"/>$</span>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h4 style="color: #787878;">Bonus formula
+                                calculation:
+                            </h4>
+                        </div>
+                        <div class="col-xs-12" style="color: #787878;">
+                            <small>
+                                <p>
+                                    <strong>Your Bonus</strong>
+                                    (Salary Bonus + Base Bonus) * Number of all your working days this year / 365
+                                    + Client Bonus
+                                </p>
+
+                                <p>Salary Bonus = (Shared profit * 0.5) *
+                                    Your salary / All Employees salary
+                                </p>
+                                <p>Base Bonus = Shared profit * 0.5
+                                    / Number of employees
+                                </p>
+                                <p>Customer Bonus = Bonus that added manually by
+                                    client
+                                </p>
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <h1 style="color: #99cc00;">
+                                <strong>Enjoy!</strong>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h5>
+                                <a t-att-href="link"><strong>Back</strong></a>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--</t>-->
+        </template>
+    </data>
+</openerp>

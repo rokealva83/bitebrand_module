@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="layout_logo_show" inherit_id="website.layout_logo_show" customize_show="True" name="Show Logo">
+            <xpath expr="//header//a[@class='navbar-brand logo']" position="replace">
+                <a href="/" class="navbar-brand logo">
+                    <img src="/kindERP_fields/static/logo.jpg" alt="Logo of ByteBrand" title="ByteBrand"/>
+                </a>
+            </xpath>
+        </template>
+    </data>
+</openerp>

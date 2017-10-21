@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_slack_bot_form">
+            <field name="name">slack.bot.form</field>
+            <field name="model">slack.bot</field>
+            <field name="arch" type="xml">
+                <form string="Slack Bot">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="token"/>
+                            <field name="only_bb"/>
+                            <field name="company_id"  attrs="{'invisible': [('only_bb', '=', True)]}"/>
+                            <field name="channel_ids" widget="many2many_tags"/>
+                        </group>
+                    </sheet>
+                </form>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_slack_bot_tree">
+            <field name="name">slack.bot.tree</field>
+            <field name="model">slack.bot</field>
+            <field name="arch" type="xml">
+                <tree string="Slack Bot">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_slack_bot_view">
+            <field name="name">Slack bot</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">slack.bot</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new slack-bot.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Slack Bot" id="menu_slack_bot"
+                  action="action_slack_bot_view"
+                  parent="event.menu_event_configuration"
+                  groups="base.group_no_one"/>
+
+
+        <record model="ir.ui.view" id="view_slack_bot_message_form">
+            <field name="name">slack.bot..message.form</field>
+            <field name="model">slack.bot.message</field>
+            <field name="arch" type="xml">
+                <form string="Slack Bot Message">
+                    <sheet>
+                        <group>
+                            <field name="type"/>
+                            <field name="message"/>
+                            <field name="link"/>
+                        </group>
+                    </sheet>
+                </form>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_slack_bot_message_tree">
+            <field name="name">slack.bot..message.tree</field>
+            <field name="model">slack.bot.message</field>
+            <field name="arch" type="xml">
+                <tree string="Slack Bot Message">
+                    <field name="type"/>
+                    <field name="message"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_slack_bot_message_view">
+            <field name="name">Slack Bot Message</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">slack.bot.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new message.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Slack Bot Message" id="menu_slack_bot_message"
+                  action="action_slack_bot_message_view"
+                  parent="event.menu_event_configuration"
+                  groups="base.group_no_one"/>
+
+    </data>
+</openerp>
