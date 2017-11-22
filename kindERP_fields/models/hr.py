@@ -30,9 +30,15 @@ _logger = logging.getLogger(__name__)
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
-    def _check_owner_user(self
-                          ):
-        res = {}
+    @api.model
+    def default_get(self, fields):
+        res = super(HrEmployee, self).default_get(fields)
+        res.update(check_owner_user = True,
+                   check_group_user = True)
+        return res
+
+    @api.multi
+    def _check_owner_user(self):
         res_groups_pool = self.env['res.groups']
         groups = res_groups_pool.search([
             ('full_name', 'in',
@@ -40,6 +46,7 @@ class HrEmployee(models.Model):
         groups_ids = [g.id for g in groups]
         if self:
             for data in self:
+
                 if self.env.uid == 1:
                     data.check_owner_user = True
                     data.check_group_user = True
@@ -49,8 +56,7 @@ class HrEmployee(models.Model):
 
                     if data.user_id.id == self.env.uid:
                         data.check_owner_user = True
-
-                    if self.env.uid in self.env['res.users'].search(
+                    if self.env.user in self.env['res.users'].search(
                             [('groups_id', 'in', groups_ids)]):
                         data.check_group_user = True
 
@@ -89,11 +95,9 @@ class HrEmployee(models.Model):
         domain=[('state', 'in', ('draft', 'issued', 'reserve'))])
 
     check_owner_user = fields.Boolean(compute="_check_owner_user",
-                                      string='Check owner user',
-                                      invisible=True)
+                                      string='Check owner user',)
     check_group_user = fields.Boolean(compute="_check_owner_user",
-                                      string='Check group user',
-                                      invisible=True, )
+                                      string='Check group user')
 
     @api.multi
     def write(self, vals):

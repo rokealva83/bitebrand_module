@@ -1,8 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hr_employee_user,hr.employee user,model_hr_employee,base.group_user,1,1,0,0
-access_hr_technique_user,hr_technique,model_hr_technique,base.group_user,1,1,0,0
-access_hr_technique_history,hr_technique_history,model_hr_technique_history,base.group_user,1,1,0,0
-access_hr_technique_history_repair_user,hr_technique_history_repair,model_hr_technique_history_repair,base.group_user,1,1,0,0
-access_hr_technique_comment_user,hr_technique_comment,model_hr_technique_comment,base.group_user,1,1,0,0
-access_hr_technique_cancellation_user,hr_technique_cancellation,model_hr_technique_cancellation,base.group_user,1,1,0,0
-access_hr_technique_type_user,hr_technique_type,model_hr_technique_type,base.group_user,1,1,0,0
+access_hr_employee_user,hr.employee user,model_hr_employee,base.group_user,1,1,1,0
+access_hr_technique_user,hr_technique,model_hr_technique,base.group_user,1,1,1,0
+access_hr_technique_history,hr_technique_history,model_hr_technique_history,base.group_user,1,1,1,0
+access_hr_technique_history_repair_user,hr_technique_history_repair,model_hr_technique_history_repair,base.group_user,1,1,1,0
+access_hr_technique_comment_user,hr_technique_comment,model_hr_technique_comment,base.group_user,1,1,1,0
+access_hr_technique_cancellation_user,hr_technique_cancellation,model_hr_technique_cancellation,base.group_user,1,1,1,0
+access_hr_technique_type_user,hr_technique_type,model_hr_technique_type,base.group_user,1,1,1,0

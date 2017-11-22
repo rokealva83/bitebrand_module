@@ -22,7 +22,8 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-from datetime import datetime
+from datetime import datetime, date
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -133,42 +134,41 @@ class HrTechnique(models.Model):
         string='Write-Off sender',
         states={'cancellation': [('readonly', True)]})
 
-    def save(self, cr, uid, ids, context=None):
+    @api.multi
+    def save(self):
+        context = self.env.context
         if context is None:
             context = {}
         print context
         if context.get('state'):
-            return self.write(cr, uid, ids, {'state': context['state']})
+            return self.write({'state': context.get('state')})
         return False
 
     @api.multi
     def write(self, vals):
         errors = []
-        for record in self.read():
+        for record in self:
             action = ''
-            state = record['state']
+            state = record.state
             next_state = vals.get('state')
 
             if vals.get('employee_id'):
-                new_employee = self.pool.get('hr.employee').read(vals[
-                                                                     'employee_id'],
-                                                                 ['name'])
+                new_employee = self.env['hr.employee'].browse(
+                    int(vals.get('employee_id')))
                 if next_state == 'issued':
                     if record['employee_id']:
-                        if record['employee_id'][0] != new_employee['id']:
+                        if record.employee_id.id != new_employee.id:
                             action = u'Issue: {old} -> {new}'.format(
-                                old=record['employee_id'][1],
-                                new=new_employee['name'])
+                                old=record.employee_id.name,
+                                new=new_employee.name)
                     else:
                         action = u'Issue: {new}'.format(
-                            new=new_employee['name'], )
+                            new=new_employee.name)
                 if next_state == 'reserve':
-                    if not (
-                                record['employee_id'] and record['employee_id'][
-                                0] ==
-                                new_employee['id']):
+                    if not (record.employee_id
+                            and record.employee_id.id == new_employee.id):
                         action = u'Reserve: {new}'.format(
-                            new=new_employee['name'], )
+                            new=new_employee.name)
 
             if next_state in ('storage', 'on_cancellation', 'cancellation'):
                 vals['employee_id'] = None
@@ -181,36 +181,36 @@ class HrTechnique(models.Model):
 
             if next_state == 'repair':
                 if not vals.get('cause_of_repair') \
-                        and not record['cause_of_repair']:
+                        and not record.cause_of_repair:
                     errors.append(' You must specify a reason for repair.')
-                if not vals.get('venue_repair') and not record['venue_repair']:
+                if not vals.get('venue_repair') and not record.venue_repair:
                     errors.append('You must specify the place of repair.')
 
             if next_state == 'on_cancellation':
                 if not vals.get('reason_for_cancellation') \
-                        and not record['reason_for_cancellation']:
+                        and not record.reason_for_cancellation:
                     errors.append(
                         'You must specify a reason for the cancellation.')
                 if not vals.get('cancellation_act_number') \
-                        and not record['cancellation_act_number']:
+                        and not record.cancellation_act_number:
                     errors.append(
                         'It should specify the number of write-off act.')
                 if not vals.get('cancellation_employee_send_ids') \
-                        and not record['cancellation_employee_send_ids']:
+                        and not record.cancellation_employee_send_ids:
                     errors.append(
-                        'It is necessary to form the comission to write-off.')
+                        'It is necessary to form the commission to write-off.')
 
             if errors:
                 raise ValidationError(
-                    _('Accounting devices', ' '.join(errors)))
+                    _(' '.join(errors)))
 
             if action:
                 vals['history_ids'] = [(0, 0, {'name': action})]
 
                 if state == 'repair' and next_state != state:
                     vals['history_repair_ids'] = [
-                        (0, 0, {'name': record['venue_repair'],
-                                'cause_of_repair': record['cause_of_repair']})]
+                        (0, 0, {'name': record.venue_repair,
+                                'cause_of_repair': record.cause_of_repair})]
                     vals['venue_repair'] = ''
                     vals['cause_of_repair'] = ''
 
@@ -281,27 +281,21 @@ class HrTechniqueCancellation(models.Model):
                                   readonly=True)
     employee_id = fields.Many2one('hr.employee',
                                   string='Employee')
-    date_agree = fields.Date(string='Agree date')
+    date_agree = fields.Datetime(string='Agree date')
     agree = fields.Boolean(string='Agree')
     technique_id = fields.Many2one('hr.technique',
                                    string='Equipment')
 
     @api.multi
-    def write(self, vals):
-        flag = super(HrTechniqueCancellation, self).write(vals)
-        for record in self.read(['technique_id']):
-            print "<<< record >>> \n %s" % record
-            cancels = self.search([('technique_id', '=', record['technique_id'][0])])
-            if cancels \
-                    and flag \
-                    and set(i['agree'] for i in self.read(cancels, ['agree'])) == set([True]):
-                self.env['hr.technique'].write([record['technique_id'][0]],
-                                                    {'state': 'cancellation'})
-        return flag
-
     def save(self):
-        return self.write({'agree': True,
-                           'date_agree': datetime.today().strftime("%Y/%m/%d")})
+        self.write({'agree': True,
+                    'date_agree': date.today().strftime(
+                        DEFAULT_SERVER_DATETIME_FORMAT)})
+        for record in self:
+            if not self.search(
+                    [('technique_id', '=', record.technique_id.id),
+                     ('agree', '=', False)]):
+                record.technique_id.write({'state': 'cancellation'})
 
 
 HrTechniqueCancellation()

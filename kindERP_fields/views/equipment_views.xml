@@ -7,6 +7,51 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <button type="action"
+                                name="%(action_technique_issue)d"
+                                string="Reserve"
+                                context="{'state': 'reserve', 'technique_id': id, 'employee_id': employee_id}"
+                                icon="fa-floppy-o "
+                                colspan="1"
+                                attrs="{'invisible': [('state', 'in', ['on_cancellation', 'cancellation'])]}"
+                                groups="hr.group_hr_user"/>
+                        <button type="action"
+                                name="%(action_technique_issue)d"
+                                string="Issue"
+                                context="{'state': 'issued', 'technique_id': id, 'employee_id': employee_id}"
+                                icon="fa-check"
+                                attrs="{'invisible': [('state', 'in', ('issued', 'on_cancellation', 'cancellation'))]}"
+                                colspan="1"
+                                groups="hr.group_hr_user"/>
+                        <button type="object"
+                                name="save"
+                                string="Repair"
+                                context="{'state': 'repair'}"
+                                icon="fa-cogs"
+                                attrs="{'invisible': [('state', 'in', ('on_cancellation', 'cancellation', 'repair'))]}"
+                                groups="hr.group_hr_user"/>
+                        <button type="object"
+                                name="save"
+                                string="Write-Off"
+                                context="{'state': 'on_cancellation'}"
+                                icon="fa-trash-o"
+                                attrs="{'invisible': [('state', 'in', ('on_cancellation', 'cancellation'))]}"
+                                groups="hr.group_hr_user"/>
+                        <button type="object"
+                                name="save"
+                                string="Storage"
+                                context="{'state': 'storage'}"
+                                attrs="{'invisible': [('state', 'in', ('on_cancellation', 'cancellation', 'storage'))]}"
+                                icon="fa-home"
+                                groups="hr.group_hr_user"/>
+
+                        <field name="state"
+                               widget="statusbar"
+                               statusbar_visible="storage,issued"
+                               statusbar_colors='{"storage":"yellow","issued":"green","reserve":"orange", "repair": "red", "cancellation": "gray"}'
+                        />
+                    </header>
                     <sheet>
                         <group colspan="4" col="4">
                             <group col="4" colspan="4">
@@ -20,22 +65,7 @@
                                        readonly="1"/>
                             </group>
                             <newline/>
-                            <button type="action"
-                                    name="%(action_technique_issue)d"
-                                    string="Reserve"
-                                    context="{'state': 'reserve', 'technique_id': id, 'employee_id': employee_id}"
-                                    icon="gtk-save"
-                                    colspan="1"
-                                    attrs="{'invisible': [('state', 'in', ['on_cancellation', 'cancellation'])]}"
-                                    groups="hr.group_hr_user"/>
-                            <button type="action"
-                                    name="%(action_technique_issue)d"
-                                    string="Issue"
-                                    context="{'state': 'issued', 'technique_id': id, 'employee_id': employee_id}"
-                                    icon="gtk-convert"
-                                    attrs="{'invisible': [('state', 'in', ('issued', 'on_cancellation', 'cancellation'))]}"
-                                    colspan="1"
-                                    groups="hr.group_hr_user"/>
+
                             <notebook colspan="4">
                                 <page string="Information" col="4">
                                     <group col="4" colspan="4">
@@ -85,7 +115,7 @@
                                                 name="%(action_technique_committee)d"
                                                 string="Add to commission"
                                                 context="{'technique_id': id}"
-                                                icon="gtk-convert"
+                                                icon="fa-users"
                                                 colspan="4"
                                                 attrs="{'invisible': [('state', 'in', ('on_cancellation', 'cancellation'))] }"/>
                                         <field name="cancellation_employee_ids"
@@ -98,7 +128,7 @@
                                                 <button type="object"
                                                         name="save"
                                                         string="Agree"
-                                                        icon="gtk-ok"
+                                                        icon="fa-check"
                                                         attrs="{'invisible': [('agree', '=', True)]}"/>
                                             </tree>
                                         </field>
@@ -116,36 +146,8 @@
                                 </page>
                             </notebook>
                         </group>
-                        <field name="state"
-                               widget="statusbar"
-                               statusbar_visible="storage,issued"
-                               statusbar_colors='{"storage":"yellow","issued":"green","reserve":"orange", "repair": "red", "cancellation": "gray"}'
-                        />
-                        <newline/>
-                        <button type="object"
-                                name="save"
-                                string="Repair"
-                                context="{'state': 'repair'}"
-                                icon="gtk-execute"
-                                attrs="{'invisible': [('state', 'in', ('on_cancellation', 'cancellation', 'repair'))]}"
-                                groups="hr.group_hr_user"
-                        />
-                        <button type="object"
-                                name="save"
-                                string="Write-Off"
-                                context="{'state': 'on_cancellation'}"
-                                icon="gtk-delete"
-                                attrs="{'invisible': [('state', 'in', ('on_cancellation', 'cancellation'))]}"
-                                groups="hr.group_hr_user"
-                        />
-                        <button type="object"
-                                name="save"
-                                string="Storage"
-                                context="{'state': 'storage'}"
-                                attrs="{'invisible': [('state', 'in', ('on_cancellation', 'cancellation', 'storage'))]}"
-                                icon="gtk-home"
-                                groups="hr.group_hr_user"
-                        />
+
+
                         <group colspan="4" groups="hr.group_hr_user">
                             <field name="history_ids" colspan="4" nolabel="1"
                                    readonly="1">

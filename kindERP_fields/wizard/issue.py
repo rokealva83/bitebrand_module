@@ -27,32 +27,29 @@ import datetime
 class Issue(models.TransientModel):
     _name = 'hr.technique.issue'
 
-    technique_id = fields.Many2one('hr.technique',
-                                   'Equipment')
-    employee_id = fields.Many2one('hr.employee',
-                                  'Employee',
-                                  required=True)
-    state = fields.Char('State',
-                        size=256)
+    @api.model
+    def default_get(self, fields):
+        res = super(Issue, self).default_get(fields)
+        res.update(technique_id=self.env.context.get('technique_id'),
+                   state=self.env.context.get('state'),
+                   employee_id=self.env.context.get('employee_id'))
+        return res
 
-    # _defaults = {
-    #     'technique_id': lambda cr, u, i, ctx: ctx.get('technique_id'),
-    #     'state': lambda cr, u, i, ctx: ctx.get('state'),
-    #     'employee_id': lambda cr, u, i, ctx: ctx.get('employee_id'),
-    # }
+    technique_id = fields.Many2one('hr.technique',
+                                   string='Equipment')
+    employee_id = fields.Many2one('hr.employee',
+                                  string='Employee',
+                                  required=True)
+    state = fields.Char(string='State')
 
     @api.multi
     def set_issue(self):
-        for record in self.read([]):
-            employee = self.pool.get('hr.employee').read(
-                record['employee_id'][0], ['department_id'])
-            self.env['hr.technique'].browse(record['technique_id'][0]).write(
-                {'state': record['state'],
-                 'employee_id': record['employee_id'][0],
+        for record in self:
+            self.env['hr.technique'].browse(record.technique_id.id).write(
+                {'state': record.state,
+                 'employee_id': record.employee_id.id,
                  'date_of_issue': datetime.date.today().strftime("%Y/%m/%d"),
-                 'department_id':
-                     employee['department_id'][0]
-                     if employee['department_id'] else None})
+                 'department_id': record.employee_id.department_id.id})
         return {'type': 'ir.actions.act_window_close'}
 
 

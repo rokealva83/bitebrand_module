@@ -7,16 +7,20 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form>
-                    <group colspan="4">
-                        <field name="employee_id" colspan="4" />
+                    <group>
+                        <field name="technique_id"/>
+                        <field name="employee_id"/>
+                        <field name="state"/>
                     </group>
-                    <separator colspan="4" />
-                    <button string="Cancel" icon="gtk-close" special="cancel" />
+                </form>
+                <footer>
                     <button type="object"
                             name="set_issue"
                             string="ОК"
                             icon="gtk-execute"/>
-                </form>
+                    <button string="Cancel" class="btn-default"
+                            special="cancel"/>
+                </footer>
             </field>
         </record>
 
@@ -39,15 +43,16 @@
             <field name="arch" type="xml">
                 <form>
                     <group colspan="4">
-                        <field name="employee_id" colspan="4" />
+                        <field name="employee_id" colspan="4"/>
                     </group>
-                    <separator colspan="4" />
-                    <button string="Cancel" icon="gtk-close" special="cancel" />
+                </form>
+                <footer>
+                    <button string="Cancel" icon="gtk-close" special="cancel"/>
                     <button type="object"
                             name="set_employee"
                             string="Added"
                             icon="gtk-add"/>
-                </form>
+                </footer>
             </field>
         </record>
 

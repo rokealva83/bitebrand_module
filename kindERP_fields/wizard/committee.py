@@ -26,15 +26,18 @@ from odoo import models, fields, api, _
 class HrCommittee(models.TransientModel):
     _name = 'hr.technique.committee'
 
+    @api.model
+    def default_get(self, fields):
+        res = super(HrCommittee, self).default_get(fields)
+        res.update(technique_id=self.env.context.get('technique_id'),
+                   employee_id=self.env.context.get('employee_id'))
+        return res
+
     technique_id = fields.Many2one('hr.technique',
                                    string='Equipment')
     employee_id = fields.Many2one('hr.employee',
                                   string='Employee',
                                   required=True)
-
-    _defaults = {
-        'technique_id': lambda cr, u, i, ctx: ctx.get('technique_id'),
-    }
 
     @api.multi
     def set_employee(self):
