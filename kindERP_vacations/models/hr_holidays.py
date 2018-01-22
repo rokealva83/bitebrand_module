@@ -184,12 +184,8 @@ class HrHolidays(models.Model):
         employee_pool = self.env['hr.employee']
         employee = employee_pool.browse(values.get('employee_id'))
         _logger.info(employee)
-        group_pool = self.pool.get('res.groups')
-
-        group_id = group_pool.search(
-            self.env.cr, SUPERUSER_ID, [('name', '=', 'Approve Vacation')])
-        group = group_pool.browse(
-            self.env.cr, SUPERUSER_ID, group_id, context=self.env.context)
+        group_pool = self.env['res.groups']
+        group = group_pool.search([('name', '=', 'Approve Vacation')])
         for user in group.users:
             if user not in followers:
                 followers.append(user)
